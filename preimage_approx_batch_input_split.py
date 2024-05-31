@@ -6,7 +6,7 @@ import os
 import sys
 from pathlib import Path
 cwd = Path.cwd()
-if str(cwd).endswith("PreimgApprox"):
+if str(cwd).endswith("PreimageApproxForNNs"):
     sys_path =  os.path.join(str(cwd), 'alpha-beta-CROWN')
 sys.path.append(sys_path)
 import pickle

@@ -626,7 +626,11 @@ class ConfigHandler:
         # Update documents.
         # self.dump_config(self.all_args, out_to_doc=True, show_help=True)
         # These are arguments specified in command line.
-        specified_args = vars(self.no_defaults_parser.parse_args())
+        # TODO: [AT] This is a workaround for the issue of two parsers not recognizing
+        # each other's args and throwing error. Ignoring unrecognized args solves this 
+        # but there should be a better way to make them explicitly aware of each other's args.
+        args, unknown = self.no_defaults_parser.parse_known_args()
+        specified_args = vars(args)
         # Read the yaml config files.
         if 'config' in specified_args:
             with open(specified_args['config'], 'r') as config_file:
@@ -636,7 +640,8 @@ class ConfigHandler:
         # Finally, override the parameters based on commandline arguments.
         self.construct_config_dict(specified_args, nonexist_ok=False)
         # For compatibility, we still return all the arguments from argparser.
-        parsed_args = self.defaults_parser.parse_args()
+        parsed_args, unknown = self.defaults_parser.parse_known_args()
+        # parsed_args = self.defaults_parser.parse_args()
         # FIXME remove this option as it has been deprecated
         if self["solver"]["multi_class"]["multi_class_method"] != "allclass_domain":
             raise RuntimeError('--multi_class_method is deprecated')

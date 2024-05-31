@@ -8,7 +8,7 @@ import os
 import sys
 from pathlib import Path
 cwd = Path.cwd()
-if str(cwd).endswith("PreimgApprox"):
+if str(cwd).endswith("PreimageApproxForNNs"):
     sys_path =  os.path.join(str(cwd), 'alpha-beta-CROWN')
     sys_path2 = os.path.join(str(cwd), 'alpha-beta-CROWN/complete_verifier')
 sys.path.append(sys_path)
@@ -248,6 +248,7 @@ def main(args=None):
     print('--- Set for Preimage Approximation ---')
     # Load Pytorch or ONNX model depends on the model path or onnx_path is given. 
     if ext == 'pt':
+        model_info=None
         if 'auto_park' in args.dataset: # different NNs for auto park case
             model_info = {'hidden_dim': args.hidden_dim, 'hidden_layer_num': args.hidden_layer_num}
         model_ori = load_model_simple(model_name, model_path, model_info, weights_loaded=True)
@@ -300,7 +301,6 @@ def main(args=None):
     timeout_threshold = preimage_arguments.Config["bab"]["timeout"]
 
     batched_vnnlib = batch_vnnlib(vnnlib)
-
     subdomain_num, time_cost, iter_cov_quota = verify_workflow(
         args, model_ori, model_incomplete, batched_vnnlib, vnnlib, vnnlib_shape,
         init_global_lb, lower_bounds, upper_bounds, new_idx,
@@ -355,6 +355,7 @@ if __name__ == "__main__":
         if args.quant:
             # This branch is for quantitative verification
             args.vcas = 1
+            main(args) # [AT] This was missing, so it made quant option to do nothing.
         elif args.depth:
             args.vcas = 1
             args.hidden_layer_num = 6
