@@ -203,6 +203,8 @@ def main(args=None):
         return
     if not os.path.exists(args.result_dir):
         os.makedirs(args.result_dir)
+
+    print(args.model)
     model_name = args.model_name
     model_path = os.path.join(MODEL_DIR, args.model)
     dataset_tp = args.dataset
@@ -443,5 +445,17 @@ if __name__ == "__main__":
         args.output_dim = 4
         args.initial_max_domains = 3
         main(args) 
+    elif args.dataset == "custom":
+        print("Else mode")
+        args.label = 1 # The label represents "fire main engine"
+        # args.record = False
+        # args.effect = False
+        # args.model_name = "lunarlander"
+        # args.model = 'lunarlander.onnx'
+        args.output_dim = 1
+        # args.initial_max_domains = 3
+        print(args.dataset, args.model)
+        main(args) 
+        # print('The configured dataset is not supported.')   
     else:
-        print('The configured dataset is not supported.')   
+        raise(Exception)

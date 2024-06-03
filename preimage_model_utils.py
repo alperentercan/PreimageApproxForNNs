@@ -64,6 +64,12 @@ def load_input_bounds(dataset, truth_label, quant, trans):
         data_max = torch.tensor([[2, 2]]).reshape(1, -1)
         data_min = torch.tensor([[0, 0]]).reshape(1, -1)
         eps = None
+    elif dataset == "custom":
+        X = torch.tensor([[1, 1]]).float()
+        labels = torch.tensor([0]).long()
+        data_max = torch.tensor([[2, 2]]).reshape(1, -1)
+        data_min = torch.tensor([[0, 0]]).reshape(1, -1)
+        eps = None      
     elif dataset == 'cartpole':
         X = torch.tensor([[0, 0, 0, 0]]).float()
         labels = torch.tensor([truth_label]).long()

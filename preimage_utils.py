@@ -280,7 +280,8 @@ def load_model_onnx_simple(path):
         # else:
         #     onnx_shape = None
         #     raise NotImplementedError('onnx shape needs to be specified')
-        pytorch_model = onnx2pytorch.ConvertModel(onnx_model, experimental=True, quirks=quirks)
+        pytorch_model = onnx2pytorch.ConvertModel(onnx_model, experimental=True)#, quirks=quirks) # [AT] It seems there never has been a
+        # quirks keyword for this function?
         pytorch_model.eval()
         pytorch_model.to(dtype=torch.get_default_dtype())
         torch.save(pytorch_model, pt_save_path)
